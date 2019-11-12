@@ -1,0 +1,26 @@
+Korekcie oscilatorov v Attiny 85 procesoroch							
+merane touto skecov a korigovane na 10kHz co najblizsie, pri napajani 3,3V							
+Skec som nasiel na internete, zial uz neviem presne kde.
+Vysledky z merania a korekcii:
+(chip cislo)	nekorigovane kHz	korekcia	po korekcii kHz
+1	  10,009	 0	10,009
+2	  10,082	-1	10,040
+3	   9,942	 2	10,020
+4	   9,880	 3	10,023
+5	  10,022	 0	10,022
+6	   9,900	 3	10,023
+7	  10,130	-3	10,030
+8	   9,950	 1	10,010
+9	  10,070	-1	10,001
+10	 9,980	 1	10,037
+11	10,120	-1	10,015
+12	10,075	-1	9,985
+13	10,000	 0	10,000
+14	 9,889	 3	10,030
+15	 9,783	 6	10,020
+16	10,120	-1	10,025
+
+Zhodna frekvencia je dolezita pre spolahlivost UART komunikacie medzi balancermi a nadriadenou jednotkou.
+
+Skec sa nahra do chipu, po resete sa na pine PB4 meria frekvencia - mala by byt 10kHz. Zmenou konstanty OSCCAL sa koriguje frekvencia.
+Pre jednoduchost sa riesi uprava konstanty v zdrojov kode a reloadnutim skece do chipu. Viac info v datasheete ATTINY 85.
