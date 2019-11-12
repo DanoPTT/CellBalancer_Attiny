@@ -4,6 +4,7 @@ Designed to use with LiFePo4 (working range 2.8V - 5V), balancing current max. 4
 Serial communication uses 4800 baud, but with INVERTED levels, so false 0V, true is Vcc.
 To communicate with standard UART simple level converter with optoisolation is used
 
-[[https://github.com/DanoPTT/CellBalancer_Attiny/blob/master/Pictures/ModuleTest.JPG|alt=ModuleTest]]
+![Alt text](Pictures/ModuleTest.JPG?raw=true "Module")
+
 
 
