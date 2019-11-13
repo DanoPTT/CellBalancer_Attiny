@@ -27,3 +27,42 @@ Použitý je sleep, s meranim každú sekundu, ale je aktivny watchdog a BOD a t
 Bez uspávania by bola spotreba cca 1,4 mA (bez komunikacie).
 Externa referencia REF3020 (2048mV) je použitá z dôvodou nestability vnútornej referencie v Attiny. R
 EF3020 je 3 svorková referencia s malým úbytkom napätia.
+Modul sa zobúdza na časovač a na prichádzajúcu komunikáciu.
+
+Sériová komunikácia
+Moduly komunikujú navzájom cez sériovú linku, modul môže buď prijímať alebo vysielať, nie súčasne (SW Serial).
+Príkaz sa pošle do prvého modulu, ten podľa adresy buď príkaz spracuje alebo prepošle ďalej. Ak prijatý paket má chybný CRC tak je zahodený. Po spracovaní sa odpoveď posiela na modul s vyššou adresou.
+Master jednotka (balancer manager) posiela prikazy na prvý modul a očakáva odpoved z posledného modulu. 
+V masteri je nastavený timeout komunikácie po ktorom sa príkaz zopakuje (2x) alebo sa prejde na ďaľší modul.
+Každý modul má jedinečnú adresu 1, 2, ...G . (Dá sa upraviť). Adresa sa nastavuje konfiguračným príkazom.
+Na testovanie som použil program pre sériouvú komunikáciu RealTerm s nastavením 4800 8 N, USB to serial modul a už spomínaný prevodník (negácia úrovní, budenie optočlena). Na výpočet CRC som použil program ktorý mám pre testovanie komunikácie z meničom PIP4048 (Axpert).
+Modul umožnuje tzv. dynamické balancovanie,t.j. spustenie/zastavenie balancovania príkazom bez ohľadu na napätie. Pokial požiadavka na spustenie nie je zopakovaná automaticky sa vypne po 60sekundách. Hardcoded balancovanie nabieha automaticky a nie je možné ho príkazom vypnúť.  
+Príkazy (príklad aj s vypočítaným crc sú v súbore prikazy.txt):
+//		aQUA get actual Ubat in mV and balance state (0/1), response <(aUA9999 B><crc><cr> 
+//		aQTA get actual temperature in kelvin, response <(aTA999><crc><cr> - temp is measured only on request, while voltage each second
+//		aQBU get starting balance voltage in mV, response <(aBS9999><crc><cr>
+//		aQRC get reference correction in mV (+- 9mV), response for positive value <(aRC 9><crc><cr>, for negative <(aRC-9><crc><cr>
+//		aQTC get temperature correction in (+- 9), response for positive value <(aTC 9><crc><cr>, for negative <(aTC-9><crc><cr>
+//		aQOC get OSCCAL correction in (+- 9), response for positive value <(aOC 9><crc><cr>, for negative <(aOC-9><crc><cr>
+//    aSDB - start dynamic balancing, response (aSDBOK<crc><cr>, it switch off automatically after 60 seconds
+//		aEDB - end dynamic balancing, response (aEDBOK<crc><cr>
+//		aBSV9999 - set start balance voltage, response (aBSVOK<crc><cr>
+//		aSRC - set voltage reference corection (-9..9), response (aRCOK<crc><cr>
+// 	aSTC - set temperature corection (-99..99), response (aRTOK<crc><cr>
+//    aSOC - set OSCCAL correction (-9..9), response (aOCOK<crc><cr>
+
+//		
+// DBG - debug - when active it send measured voltage each 3 seconds, it sets to off after 1 minute
+        can be used only when module is stand allone 
+//		
+//
+// brodcasted (re-routed) commands as address is used 'Z':
+//    SMA0<crc><cr> set all module addres automaticaly modul increments received address(start is 0) set it and then forwards modified SMAa<crc><cr>
+//		QMA get module address,it first sends address of module "(MAa<crc><cr>" followed by ZQMA<crc><cr>
+//    
+//    command but with adress of module. so it would look like ZSMA0 -> ZSMA1 -> .... last 16th module sends ZSMAG 
+//   
+//    a- is address of module
+//    
+// all commands and responses must end with correct <CRC><cr>
+  
