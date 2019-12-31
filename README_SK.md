@@ -46,6 +46,19 @@ Hardcoded balancovanie nabieha automaticky a nie je možné ho príkazom vypnú�
 Testovaci balancer manager
 ![Alt text](Pictures/BalManager.png?raw=true "Master - manager")
 
+Spracovanie prijatých znakov vykonáva trieda BufferClass v metóde readFromSerial.
+Číta znaky zo streamu (SW Serial) a čaká na znak CR (koniec riadku 0x0d). 
+Poznámka: crc by nemalo nikdy obsahovať tento znak, inak dôjde k chybe, aj preto som použil pre výpocet
+rovnaký spôsob ako používa Axpert.
+Ak je prijatý znak CR, predpokladá sa že to čo je v poli data[] triedy BufferClass je možná komunikácia,
+a ďaľším krokom je kontrola crc. (crc by malo byť 2 znaky pred znakom CR).
+Ak crc znaky sedia ("if (recievedCrc == calculatedCrc)") s vypočítaným crc, 
+nastaví sa flag hasData na true aby hlavná sľučka programu vedela,
+že treba spracovať alebo preposlať prijaté znaky.
+Ak vypočítané crc nesedí, pole data[] triedy BufferClass sa vyčistí, a prijaté znaky sú ignorované.
+Pre testovacie účely je možné upraviť podmienku tak aby bola stále splnená a nebolo kontrolované crc.
+"if (recievedCrc == calculatedCrc)" upravit ->  "if (true)".
+![Alt text](Pictures/BufferClass.png?raw=true "BufferClass - kontrola crc")
 
 ###### Príkazy 
 Príklady aj s vypočítaným crc sú v súbore [prikazy.txt](Source/prikazy.txt):
