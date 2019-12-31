@@ -58,7 +58,7 @@ nastaví sa flag hasData na true aby hlavná sľučka programu vedela,
 Ak vypočítané crc nesedí, pole data[] triedy BufferClass sa vyčistí, a prijaté znaky sú ignorované.
 Pre testovacie účely je možné upraviť podmienku tak aby bola stále splnená a nebolo kontrolované crc.
 "if (recievedCrc == calculatedCrc)" upravit ->  "if (true)".
-![Alt text](Pictures/BufferClass.png?raw=true "BufferClass - kontrola crc")
+![Alt text](Pictures/BufferClass.PNG?raw=true "BufferClass - kontrola crc")
 
 ###### Príkazy 
 Príklady aj s vypočítaným crc sú v súbore [prikazy.txt](Source/prikazy.txt):
