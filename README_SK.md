@@ -45,6 +45,7 @@ Pokial požiadavka na spustenie nie je zopakovaná automaticky sa vypne po 60sek
 Hardcoded balancovanie nabieha automaticky a nie je možné ho príkazom vypnúť.  
 Testovaci balancer manager
 ![Alt text](Pictures/BalManager.PNG?raw=true "Master - manager")
+
 Uplne vľavo sú príkazy aj s odozvami (napr. prikaz 1QUA - precitanie aktuálneho napätia a stavu balancéra na clanku 1. nasledovany odozvou "(1UA3239 0" - napatie 3239mV, 0 - balancovane vypnute). Je tam vidno aj prikazy pre citanie teploty 1QTA.. teplota v kelvinoch.
 V pravej casti je zoznam clankov prvy stlpec adresy, 2. stlpec aktualne napatie a atd...
 Aky by bolo treba dat do serie viac clankov ako 16, bude treba doplnit dekodovanie adries.
@@ -62,10 +63,12 @@ Ak vypočítané crc nesedí, pole data[] triedy BufferClass sa vyčistí, a pri
 Pre testovacie účely je možné upraviť podmienku tak aby bola stále splnená a nebolo kontrolované crc.
 "if (recievedCrc == calculatedCrc)" upravit ->  "if (true)".
 ![Alt text](Pictures/BufferClass.PNG?raw=true "BufferClass - kontrola crc")
+
 Kontrola crc je v Buffer.cpp riadok 73. samotný výpočet crc robí funkcia "calculate_crc", ta sa volá z riadku 65. v Buffer.cpp. 
 Funkcia "calculate_crc" je definovana v súbore "bal_crc.cpp" .
 Ked sa použije iný výpočet crc, treba zabezpečiť aby crc neobsahovalo znaky 0x28, 0x0d, 0x0a. Toto má implementovaný výpocet crc pre PIP (axpert), ošetrené na riadku 35. v bal_crc.cpp. Znaky 0x0d, 0x0a sa pouzivaju na označenie konca riadku - to by kolidovalo s detekovaním konca prikazu, resp. konca bloku údajov (v zdrojovom kóde konštanta CR). 
 V súbore prikazy.txt su priklady prikazov s vypočítaným crc, ktoré som priamo zadával v Realterm (aplikácia pre seriový terminál pod windows) pri testovani.
+
 ###### Príkazy 
 Príklady aj s vypočítaným crc sú v súbore [prikazy.txt](Source/prikazy.txt):
 
