@@ -44,7 +44,7 @@ Modul umožnuje tzv. dynamické balancovanie,t.j. spustenie/zastavenie balancova
 Pokial požiadavka na spustenie nie je zopakovaná automaticky sa vypne po 60sekundách. 
 Hardcoded balancovanie nabieha automaticky a nie je možné ho príkazom vypnúť.  
 Testovaci balancer manager
-![Alt text](Pictures/BalManager.png?raw=true "Master - manager")
+![Alt text](Pictures/BalManager.PNG?raw=true "Master - manager")
 Uplne vľavo sú príkazy aj s odozvami (napr. prikaz 1QUA - precitanie aktuálneho napätia a stavu balancéra na clanku 1. nasledovany odozvou "(1UA3239 0" - napatie 3239mV, 0 - balancovane vypnute). Je tam vidno aj prikazy pre citanie teploty 1QTA.. teplota v kelvinoch.
 V pravej casti je zoznam clankov prvy stlpec adresy, 2. stlpec aktualne napatie a atd...
 Aky by bolo treba dat do serie viac clankov ako 16, bude treba doplnit dekodovanie adries.
